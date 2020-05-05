@@ -31,8 +31,15 @@ namespace BlazorApp
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
+            
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<IMongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+            //register City service
+            services.AddScoped<ICustomerService, CustomerService>();
+
+            //enable detailed circuit errors for Blazor server 
+            services.AddServerSideBlazor().AddCircuitOptions(o => o.DetailedErrors = true);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
