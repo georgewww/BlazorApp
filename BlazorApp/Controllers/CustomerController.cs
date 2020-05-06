@@ -2,45 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorApp.Models;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace BlazorApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Microsoft.AspNetCore.Mvc.Route("api/[controller]")]
     [ApiController]
     public class CustomerController : ControllerBase
     {
+
+        private readonly ICustomerService _customerservice;
+        public CustomerController(ICustomerService customerservice)
+        {
+            _customerservice = customerservice;
+        }
+
         // GET: api/Customer
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<List<Customer>> GetAsync()
         {
-            return new string[] { "value1", "value2" };
+            return await _customerservice.GetCustomers();
+          //  return new string[] { "value1", "value2" };
         }
 
         // GET: api/Customer/5
         [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        public async Task<ActionResult<Customer>> Get(string id)
         {
-            return "value";
+            return await _customerservice.SingleCustomer(id);
         }
 
         // POST: api/Customer
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task PostAsync([FromBody] Customer value)
         {
+           await _customerservice.CreateCustomer(value);
         }
 
         // PUT: api/Customer/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task Put(string id, [FromBody] Customer value)
         {
+            await _customerservice.EditCustomer(id, value);
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task DeleteAsync(string id)
         {
+            await _customerservice.DeleteCustomer(id);
         }
     }
 }

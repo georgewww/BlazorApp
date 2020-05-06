@@ -71,7 +71,7 @@ namespace BlazorApp.Models
         {
             try
             {
-                return await _customer.Find<Customer>(customer => customer.Id == id).FirstOrDefaultAsync();
+                return await _customer.Find<Customer>(customer => customer.Id.Equals(id)).FirstOrDefaultAsync();
             }
             catch
             {
