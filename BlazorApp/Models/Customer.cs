@@ -10,7 +10,9 @@ namespace BlazorApp.Models
 {
     public class Customer
     {
-       
+
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string CompanyName { get; set; }
         public string ContactName { get; set; }

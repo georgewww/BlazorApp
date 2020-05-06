@@ -1,0 +1,72 @@
+﻿@using BlazorApp.Models
+
+@page "/deletecustomer/{id}"
+@inject NavigationManager NavigationManager
+@inject ICustomerService CustomerService
+
+<h2>Επιβεβαίωση διαγραφής</h2>
+<p>Είστε σίγουροι οτι θέλετε να  διαγράψετε τον πελάτη με τηλ :<b> @customer.Phone</b></p>
+<br />
+<div class="col-md-4">
+    <table class="table">
+        <tr>
+            <td>Name</td>
+            <td>@customer.CompanyName</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>@customer.ContactName</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@customer.Address</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>@customer.City</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@customer.Region</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>@customer.PostalCode</td>
+        </tr>
+        <tr>
+            <td>Name</td>
+            <td>@customer.Country</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td>@customer.Phone</td>
+        </tr>
+    </table>
+    <div class="form-group">
+        <input type="button" value="Delete" @onclick="@Delete" class="btn btn-primary" />
+        <input type="button" value="Cancel" @onclick="@Cancel" class="btn" />
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public string id { get; set; }
+    Customer customer = new Customer();
+
+    protected override async Task OnInitializedAsync()
+    {
+        customer = await CustomerService.SingleCustomer(id);
+    }
+
+    protected async Task Delete()
+    {
+        await CustomerService.DeleteCustomer(id);
+        NavigationManager.NavigateTo("listcustomers");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("listcustomers");
+    }
+}   

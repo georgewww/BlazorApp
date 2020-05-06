@@ -1,0 +1,60 @@
+﻿@using BlazorApp.Models
+
+@page "/listcustomers"
+@inject ICustomerService CustomerService
+
+<h2>City Details</h2>
+<p>
+    <a href="/addcustomer">Create New Customer</a>
+</p>
+
+@if (customers == null)
+{
+    <img src="./basicloader.gif" />
+}
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>CompanyName</th>
+                <th>ContactName</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>Region</th>
+                <th>PostalCode</th>
+                <th>Country</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in customers)
+            {
+            <tr>
+                <td>@customer.CompanyName</td>
+                <td>@customer.ContactName</td>
+                <td>@customer.Address</td>
+                <td>@customer.City</td>
+                <td>@customer.Region</td>
+                <td>@customer.PostalCode</td>
+                <td>@customer.Country</td>
+                <td>@customer.Phone</td>
+                <td>
+                    <a href='/editcustomer/@customer.Id'>Edit</a> | 
+                    <a href='/deletecustomer/@customer.Id'>Delete</a>
+                </td>
+            </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Customer> customers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customers = await CustomerService.GetCustomers();
+    }
+}   

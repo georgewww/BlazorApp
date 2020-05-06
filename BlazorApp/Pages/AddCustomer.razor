@@ -1,0 +1,70 @@
+﻿@using BlazorApp.Models
+
+@page "/addcustomer"
+@inject NavigationManager NavigationManager
+@inject ICustomerService CustomerService
+
+<h2>Create Customer</h2>
+<hr />
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="CompanyName" class="control-label">CompanyName</label>
+                <input for="CompanyName" class="form-control" @bind="@customer.CompanyName" />
+            </div>
+            <div class="form-group">
+                <label for="ContactName" class="control-label">ContactName</label>
+                <input for="ContactName" class="form-control" @bind="@customer.ContactName" />
+            </div>
+            <div class="form-group">
+                <label for="Address" class="control-label">Address</label>
+                <input for="Address" class="form-control" @bind="@customer.Address" />
+            </div>
+            <div class="form-group">
+                <label for="City" class="control-label">City</label>
+                <input for="City" class="form-control" @bind="@customer.City" />
+            </div>
+            <div class="form-group">
+                <label for="Region" class="control-label">Region</label>
+                <input for="Region" class="form-control" @bind="@customer.Region" />
+            </div>
+            <div class="form-group">
+                <label for="PostalCode" class="control-label">PostalCode</label>
+                <input for="PostalCode" class="form-control" @bind="@customer.PostalCode" />
+            </div>
+            <div class="form-group">
+                <label for="Country" class="control-label">Country</label>
+                <input for="Country" class="form-control" @bind="@customer.Country" />
+            </div>
+            <div class="form-group">
+                <label for="Phone" class="control-label">Phone</label>
+                <input for="Phone" class="form-control" @bind="@customer.Phone" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" @onclick="@CreateCustomer" value="Save" />
+                <input type="button" class="btn" @onclick="@Cancel" value="Cancel" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    Customer customer = new Customer();
+
+    protected async Task CreateCustomer()
+    {
+        await CustomerService.CreateCustomer(customer);
+        NavigationManager.NavigateTo("listcustomers");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("listcustomers");
+    }
+}   
