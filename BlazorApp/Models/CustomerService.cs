@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,7 @@ namespace BlazorApp.Models
         {
             try
             {
-                await _customer.DeleteOneAsync(book => book.Id == id);
+                await _customer.DeleteOneAsync(book => book.Id == ObjectId.Parse(id));
                 return true;
             }
             catch
@@ -46,7 +47,7 @@ namespace BlazorApp.Models
         {
             try
             {
-                await _customer.ReplaceOneAsync(book => book.Id == id, customer);
+                await _customer.ReplaceOneAsync(book => book.Id == ObjectId.Parse(id), customer);
                 return true;
             }
             catch
@@ -59,7 +60,44 @@ namespace BlazorApp.Models
         {
             try
             {
-                return await _customer.Find(customer => true).ToListAsync();
+               return await _customer.Find(customer => true).SortByDescending(p => p.Id).Limit(5).ToListAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Customer>> GetCustomersNextPage(string id)
+        {
+            try
+            {
+                var filterBuilder = Builders<Customer>.Filter;
+                var filter = filterBuilder.Lt(customer => customer.Id, ObjectId.Parse(id));
+             
+                return await _customer.Find(filter)
+                                            .SortByDescending(p => p.Id)
+                                            .Limit(5)
+                                            .ToListAsync();
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<List<Customer>> GetCustomersPreviousPage(string id)
+        {
+            try
+            {
+                var filterBuilder = Builders<Customer>.Filter;
+                var filter = filterBuilder.Gt(customer => customer.Id, ObjectId.Parse(id));
+
+                var temp  =  await _customer.Find(filter)
+                                            .SortBy(p => p.Id)
+                                            .Limit(5)
+                                            .ToListAsync();
+                return   temp.OrderByDescending(o => o.Id).ToList();
             }
             catch
             {
@@ -71,7 +109,7 @@ namespace BlazorApp.Models
         {
             try
             {
-                return await _customer.Find<Customer>(customer => customer.Id.Equals(id)).FirstOrDefaultAsync();
+                return await _customer.Find<Customer>(customer => customer.Id.Equals(ObjectId.Parse(id))).FirstOrDefaultAsync();
             }
             catch
             {

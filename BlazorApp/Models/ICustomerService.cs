@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,5 +13,8 @@ namespace BlazorApp.Models
         Task<bool> EditCustomer(string id, Customer customer);
         Task<Customer> SingleCustomer(string id);
         Task<bool> DeleteCustomer(string id);
+        Task<List<Customer>> GetCustomersNextPage(string id);
+        Task<List<Customer>> GetCustomersPreviousPage(string id);
+        
     }
 }

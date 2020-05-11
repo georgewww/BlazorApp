@@ -2,7 +2,7 @@
 
 @page "/listcustomers"
 @inject ICustomerService CustomerService
-
+@inject NavigationManager NavigationManager
 <h2>City Details</h2>
 <p>
     <a href="/addcustomer">Create New Customer</a>
@@ -30,24 +30,33 @@ else
         <tbody>
             @foreach (var customer in customers)
             {
-            <tr>
-                <td>@customer.CompanyName</td>
-                <td>@customer.ContactName</td>
-                <td>@customer.Address</td>
-                <td>@customer.City</td>
-                <td>@customer.Region</td>
-                <td>@customer.PostalCode</td>
-                <td>@customer.Country</td>
-                <td>@customer.Phone</td>
-                <td>
-                    <a href='/editcustomer/@customer.Id'>Edit</a> | 
-                    <a href='/deletecustomer/@customer.Id'>Delete</a>
-                </td>
-            </tr>
+                System.Diagnostics.Debug.WriteLine("List of customers: " + customer.ContactName);
+                <tr>
+                    <td>@customer.CompanyName</td>
+                    <td>@customer.ContactName</td>
+                    <td>@customer.Address</td>
+                    <td>@customer.City</td>
+                    <td>@customer.Region</td>
+                    <td>@customer.PostalCode</td>
+                    <td>@customer.Country</td>
+                    <td>@customer.Phone</td>
+                    <td>
+                        <a href='/editcustomer/@customer.Id'>Edit</a> |
+                        <a href='/deletecustomer/@customer.Id'>Delete</a>
+                    </td>
+                </tr>
 
             }
         </tbody>
     </table>
+
+
+    <div>
+        <input type="button" class="btn btn-primary"  @onclick="@GetPreviousPage" value=" ← " />
+        <input type="button" class="btn btn-primary" @onclick="@GetNextPage" value=" → " />
+    </div>
+
+
 }
 
 @code {
@@ -56,5 +65,30 @@ else
     protected override async Task OnInitializedAsync()
     {
         customers = await CustomerService.GetCustomers();
+        System.Diagnostics.Debug.Print("Initiate: ");
+
+    }
+
+    protected async Task GetNextPage()
+    {
+        System.Diagnostics.Debug.Print("Count 1: " + customers.Count);
+
+        if (customers.Count > 0 )
+            customers = await CustomerService.GetCustomersNextPage(customers.LastOrDefault().Id.ToString());
+
+        System.Diagnostics.Debug.Print("Count 2: " + customers.Count);
+
+        NavigationManager.NavigateTo("listcustomers");
+    }
+
+    protected async Task GetPreviousPage()
+    {
+        System.Diagnostics.Debug.Print("Count Previous 1: " + customers.Count);
+
+        if (customers.Count > 0)
+            customers = await CustomerService.GetCustomersPreviousPage(customers.FirstOrDefault().Id.ToString());
+        // System.Diagnostics.Debug.Print("Last: " + customers.LastOrDefault().Id.ToString());
+        System.Diagnostics.Debug.Print("Count Previous 1: " + customers.Count);
+        NavigationManager.NavigateTo("listcustomers");
     }
 }   
