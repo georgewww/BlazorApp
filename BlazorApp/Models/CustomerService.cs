@@ -60,7 +60,7 @@ namespace BlazorApp.Models
         {
             try
             {
-               return await _customer.Find(customer => true).SortByDescending(p => p.Id).Limit(5).ToListAsync();
+               return await _customer.Find(customer => true).SortByDescending(p => p.Id).Limit(10).ToListAsync();
             }
             catch
             {
@@ -77,7 +77,7 @@ namespace BlazorApp.Models
              
                 return await _customer.Find(filter)
                                             .SortByDescending(p => p.Id)
-                                            .Limit(5)
+                                            .Limit(10)
                                             .ToListAsync();
             }
             catch
@@ -95,7 +95,7 @@ namespace BlazorApp.Models
 
                 var temp  =  await _customer.Find(filter)
                                             .SortBy(p => p.Id)
-                                            .Limit(5)
+                                            .Limit(10)
                                             .ToListAsync();
                 return   temp.OrderByDescending(o => o.Id).ToList();
             }
@@ -109,7 +109,7 @@ namespace BlazorApp.Models
         {
             try
             {
-                return await _customer.Find<Customer>(customer => customer.Id.Equals(ObjectId.Parse(id))).FirstOrDefaultAsync();
+                return await _customer.Find(customer => customer.Id == (ObjectId.Parse(id))).FirstOrDefaultAsync();
             }
             catch
             {

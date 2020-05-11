@@ -26,7 +26,23 @@ namespace BlazorApp.Controllers
         public async Task<List<Customer>> GetAsync()
         {
             return await _customerservice.GetCustomers();
-          //  return new string[] { "value1", "value2" };
+         
+        }
+
+        // GET: api/Customer/5
+        [HttpGet("CustomersPreviousPage/{id}", Name = "CustomersPreviousPage")]
+        public async Task<List<Customer>> GetCustomersPreviousPage(string id)
+        {
+            return await _customerservice.GetCustomersPreviousPage(id);
+           
+        }
+
+        // GET: api/Customer/5
+        [HttpGet("CustomersNextPage/{id}", Name = "CustomersNextPage")]
+        public async Task<List<Customer>> GetCustomersNextPage(string id)
+        {
+            return await _customerservice.GetCustomersNextPage(id);
+       
         }
 
         // GET: api/Customer/5
