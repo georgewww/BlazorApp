@@ -89,7 +89,7 @@ namespace BlazorApp.Models
         public async Task<List<Customer>> GetCustomersPreviousPage(string id)
         {
             try
-            {
+            { 
                 var filterBuilder = Builders<Customer>.Filter;
                 var filter = filterBuilder.Gt(customer => customer.Id, ObjectId.Parse(id));
 
