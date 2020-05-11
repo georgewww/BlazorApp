@@ -61,6 +61,7 @@ else
 
 @code {
     List<Customer> customers;
+    List<Customer> listofcustomers;
 
     protected override async Task OnInitializedAsync()
     {
@@ -74,7 +75,9 @@ else
         System.Diagnostics.Debug.Print("Count 1: " + customers.Count);
 
         if (customers.Count > 0 )
-            customers = await CustomerService.GetCustomersNextPage(customers.LastOrDefault().Id.ToString());
+            listofcustomers = await CustomerService.GetCustomersNextPage(customers.LastOrDefault().Id.ToString());
+
+        customers = listofcustomers.Count > 0 ? listofcustomers : customers;
 
         System.Diagnostics.Debug.Print("Count 2: " + customers.Count);
 
@@ -86,7 +89,10 @@ else
         System.Diagnostics.Debug.Print("Count Previous 1: " + customers.Count);
 
         if (customers.Count > 0)
-            customers = await CustomerService.GetCustomersPreviousPage(customers.FirstOrDefault().Id.ToString());
+            listofcustomers = await CustomerService.GetCustomersPreviousPage(customers.FirstOrDefault().Id.ToString()) ?? customers;
+
+        customers = listofcustomers.Count > 0 ? listofcustomers : customers;
+
         // System.Diagnostics.Debug.Print("Last: " + customers.LastOrDefault().Id.ToString());
         System.Diagnostics.Debug.Print("Count Previous 1: " + customers.Count);
         NavigationManager.NavigateTo("listcustomers");
