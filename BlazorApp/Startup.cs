@@ -31,7 +31,17 @@ namespace BlazorApp
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
 
-            
+
+            services.AddAuthentication("Bearer")
+                .AddIdentityServerAuthentication(options =>
+                {
+                    options.Authority = "https://demo.identityserver.io/"; //// Auth server
+                    options.RequireHttpsMetadata = false;
+
+                    options.ApiName = "api";  //// API Name
+                });
+            services.AddAuthentication();
+
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<IMongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
@@ -45,6 +55,8 @@ namespace BlazorApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+           
+           
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,9 +67,13 @@ namespace BlazorApp
             }
 
             app.UseStaticFiles();
-
+           
+           
             app.UseRouting();
-
+            // app.UseIdentityServer();
+            app.UseAuthentication();
+            app.UseAuthorization();
+         
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
