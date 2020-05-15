@@ -45,7 +45,7 @@ namespace BlazorApp
             services.Configure<MongoDbSettings>(Configuration.GetSection(nameof(MongoDbSettings)));
             services.AddSingleton<IMongoDbSettings>(sp => sp.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
-            //register City service
+            //register Customer service
             services.AddScoped<ICustomerService, CustomerService>();
 
             //enable detailed circuit errors for Blazor server 
