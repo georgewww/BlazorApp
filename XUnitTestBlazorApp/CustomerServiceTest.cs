@@ -8,7 +8,7 @@ using Xunit;
 
 namespace XUnitTestBlazorApp
 {
-    public class CustomerServiceTest
+    public class CustomerServiceTest 
     {
         private readonly Mock<ICustomerService> _customerMock = new Mock<ICustomerService>();
        // private readonly Mock<IMongoDbSettings> _mongoSettingsMock = new Mock<IMongoDbSettings>();
@@ -44,10 +44,13 @@ namespace XUnitTestBlazorApp
 
             // Act
               var customer = await _customerservice.SingleCustomer("5eb941f4ce6a823450c1a667");
-            _customerMock.VerifyAll();
-            // Assert
 
+            // Assert
+            _customerMock.Verify(m => m.SingleCustomer("5eb941f4ce6a823450c1a667"), Times.Never());
             Assert.Equal(customer.CompanyName, customerMock.CompanyName);
+            Assert.Equal(customer.Address, customerMock.Address);
+            Assert.Equal(customer.City, customerMock.City);
+            Assert.Equal(customer.Region, customerMock.Region);
         }
     }
 }
