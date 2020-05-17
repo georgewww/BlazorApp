@@ -68,7 +68,7 @@ namespace BlazorApp.Controllers
             await _customerservice.EditCustomer(id, value);
         }
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Customer/5
         [HttpDelete("{id}")]
         public async Task DeleteAsync(string id)
         {

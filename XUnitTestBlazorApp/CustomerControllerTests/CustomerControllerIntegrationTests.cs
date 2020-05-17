@@ -108,7 +108,8 @@ namespace XUnitTestBlazorApp.CustomerControllerTests
 
             Assert.Equal(testcustomer.CompanyName, ((dynamic)actualcustomer).companyName);
             Assert.Equal(testcustomer.ContactName, ((dynamic)actualcustomer).contactName);
-
+           
+            await _client.DeleteAsync(url + "/" + responseContent); // delete testcustomer
         }
     }
 }
