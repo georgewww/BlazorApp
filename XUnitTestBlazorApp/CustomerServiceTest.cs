@@ -17,7 +17,7 @@ namespace XUnitTestBlazorApp
 
         public CustomerServiceTest()
         {
-            //TODO: cant mock dbsettings, the _mongoSettingsMock.Object properties are null
+            //TODO:  mock dbsettings, the _mongoSettingsMock.Object properties are null, needs mapping with appsettings
             _mongoSettings.ConnectionString = "mongodb://localhost:27017";
             _mongoSettings.DatabaseName = "CustomerDB";
             _mongoSettings.CollectionName = "CustomerRecord";

@@ -17,16 +17,17 @@ namespace BlazorApp.Models
 
             _customer = database.GetCollection<Customer>(settings.CollectionName);
         }
-        public async Task<bool> CreateCustomer(Customer customer)
+        public async Task<string> CreateCustomer(Customer customer)
         {
             try
             {
                 await _customer.InsertOneAsync(customer);
-                return true;
+
+                return customer.Id.ToString();
             }
             catch
             {
-                return false;
+                return "error on create customer";
             }
         }
 

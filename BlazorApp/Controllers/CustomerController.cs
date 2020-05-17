@@ -56,9 +56,9 @@ namespace BlazorApp.Controllers
 
         // POST: api/Customer
         [HttpPost]
-        public async Task PostAsync([FromBody] Customer value)
+        public async Task<ActionResult<String>> PostAsync([FromBody] Customer value)
         {
-           await _customerservice.CreateCustomer(value);
+          return  await _customerservice.CreateCustomer(value);
         }
 
         // PUT: api/Customer/5
